@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.BufferedWriter;
 
 public class CSVUtil {
     public static void writeToCSV(String filePath, String[][] data) {
@@ -27,5 +29,29 @@ public class CSVUtil {
             e.printStackTrace();
         }
         return data;
+    }
+
+    public static void deleteLine(String filePath, int lineNumber) {
+        File inputFile = new File(filePath);
+        File tempFile = new File("temp.csv");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String currentLine;
+            int lineCounter = 1;
+
+            while ((currentLine = reader.readLine()) != null) {
+                if (lineCounter != lineNumber) {
+                    writer.write(currentLine + System.lineSeparator());
+                }
+                lineCounter++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        inputFile.delete();
+        tempFile.renameTo(inputFile);
     }
 }
