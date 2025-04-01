@@ -1,0 +1,104 @@
+[
+  {
+    "ID": "",
+    "name": ""
+  },
+  {
+    "ID": "U30e1b599",
+    "name": "Alice",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ude5c011d",
+    "name": "Alice",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ua2e4eb1c",
+    "name": "George",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ub62ae354",
+    "name": "Charlie",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ucc531e31",
+    "name": "Charlie",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "U83b9f1df",
+    "name": "Charlie",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "U7ad6d384",
+    "name": "Noah",
+    "borrowedCopyIds": [
+      "f4bd7342-f43c-420b-a0f4-88bebf567b90"
+    ]
+  },
+  {
+    "ID": "U5885faff",
+    "name": "Noah",
+    "borrowedCopyIds": [
+      "1ba0642a-a560-4b78-9677-0e071ee411bb"
+    ]
+  },
+  {
+    "ID": "Uae106e39",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ucedcbd4e",
+    "name": "Noah",
+    "borrowedCopyIds": [
+      "8f903968-fcb3-4726-8602-dfb871cf7135"
+    ]
+  },
+  {
+    "ID": "U924cc2c2",
+    "name": "Noah",
+    "borrowedCopyIds": [
+      "7e85a644-1d80-44cf-94bf-f9b6ef30c108"
+    ]
+  },
+  {
+    "ID": "U3f2e10ef",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Uaee3b82f",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Uc3a899b7",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "U11674f3b",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "U8ab24575",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Ua89472b9",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  },
+  {
+    "ID": "Uc8d0fe7e",
+    "name": "Noah",
+    "borrowedCopyIds": []
+  }
+]
