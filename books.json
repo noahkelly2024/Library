@@ -87,10 +87,12 @@
       },
       {
         "copyId": "bad3d848-6237-4192-a851-37ca789b434d",
+        "borrowedBy": "U5a338409",
         "onLoanToAnotherLibrary": false
       },
       {
         "copyId": "750b3aac-2582-478e-92e2-34b708bb59ee",
+        "borrowedBy": "U0af2e230",
         "onLoanToAnotherLibrary": false
       }
     ]
