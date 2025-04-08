@@ -10,7 +10,7 @@ public class Book {
     private String title;
     private String author;
     private List<BookCopy> copies; // Track individual copies
-    private static final String filepath = "books.json"; 
+    private static final String filepath = "books.json";
 
     // Constructor
     public Book(String isbn, String title, String author, int quantity) {
@@ -211,6 +211,10 @@ public class Book {
         
         System.out.println("Book with ISBN " + isbn + " not found");
         return null;
+    }
+
+    public static void massUploadUsers(String fileName) {
+
     }
 
     /**
