@@ -5,16 +5,20 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
 
+/**
+ * The graphical user interface (GUI) for the library system.
+ * Provides panels for managing transactions, users, and books.
+ */
 public class LibraryGUI extends JFrame {
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    // Panels
+    // Panels for different sections of the library system
     private JPanel transactionsPanel;
     private JPanel userPanel;
     private JPanel bookPanel;
 
-    // Tables
+    // Tables for displaying data
     private JTable transactionsTable;
     private JTable userTable;
     private JTable bookTable;
@@ -85,10 +89,15 @@ public class LibraryGUI extends JFrame {
         return menuBar;
     }
 
+    /**
+     * Initializes the Transactions Panel.
+     * This panel allows users to manage transactions (add, edit, delete, refresh, and upload CSV).
+     */
     private void initTransactionsPanel() {
         transactionsPanel = new JPanel(new BorderLayout());
         transactionsPanel.setBackground(new Color(245, 245, 245)); // Light gray background
 
+        // Define table columns for transactions
         String[] columns = {"Transaction ID", "User ID", "Book ISBN", "Transaction Type", "Transaction Date", "Fine Amount"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         transactionsTable = new JTable(model);
@@ -97,8 +106,9 @@ public class LibraryGUI extends JFrame {
         transactionsTable.setGridColor(Color.LIGHT_GRAY);
         JScrollPane scrollPane = new JScrollPane(transactionsTable);
 
+        // Create buttons for managing transactions
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBackground(new Color(245, 245, 245)); // Light cyan
+        buttonsPanel.setBackground(new Color(224, 255, 255)); // Light cyan
         JButton addButton = new JButton("Add Transaction");
         JButton editButton = new JButton("Edit Transaction");
         JButton deleteButton = new JButton("Delete Transaction");
@@ -113,12 +123,14 @@ public class LibraryGUI extends JFrame {
             button.setFont(new Font("Arial", Font.BOLD, 12));
         }
 
+        // Add buttons to the panel
         buttonsPanel.add(addButton);
         buttonsPanel.add(editButton);
         buttonsPanel.add(deleteButton);
         buttonsPanel.add(refreshButton);
         buttonsPanel.add(uploadCsvButton);
 
+        // Add action listeners for button functionality
         addButton.addActionListener(e -> addTransaction());
         editButton.addActionListener(e -> editTransaction());
         deleteButton.addActionListener(e -> deleteTransaction());
@@ -129,14 +141,20 @@ public class LibraryGUI extends JFrame {
             refreshTransactions();
         });
 
+        // Add components to the transactions panel
         transactionsPanel.add(scrollPane, BorderLayout.CENTER);
         transactionsPanel.add(buttonsPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Initializes the Users Panel.
+     * This panel allows users to manage library users (add, edit, delete, refresh, and upload CSV).
+     */
     private void initUserPanel() {
         userPanel = new JPanel(new BorderLayout());
         userPanel.setBackground(new Color(245, 245, 245)); // Light gray background
 
+        // Define table columns for users
         String[] columns = {"User ID", "Name", "Borrowed ISBNs"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         userTable = new JTable(model);
@@ -145,8 +163,9 @@ public class LibraryGUI extends JFrame {
         userTable.setGridColor(Color.LIGHT_GRAY);
         JScrollPane scrollPane = new JScrollPane(userTable);
 
+        // Create search panel for users
         JPanel searchPanel = new JPanel();
-        searchPanel.setBackground(new Color(211, 211, 211));
+        searchPanel.setBackground(new Color(211, 211, 211)); // Light gray
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search User");
         searchButton.setBackground(new Color(100, 149, 237)); // Cornflower blue
@@ -156,6 +175,7 @@ public class LibraryGUI extends JFrame {
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
 
+        // Create buttons for managing users
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setBackground(new Color(211, 211, 211));
         JButton addButton = new JButton("Add User");
@@ -172,12 +192,14 @@ public class LibraryGUI extends JFrame {
             button.setFont(new Font("Arial", Font.BOLD, 12));
         }
 
+        // Add buttons to the panel
         buttonsPanel.add(addButton);
         buttonsPanel.add(editButton);
         buttonsPanel.add(deleteButton);
         buttonsPanel.add(uploadCsvButton);
         buttonsPanel.add(refreshButton);
 
+        // Add action listeners for button functionality
         searchButton.addActionListener(e -> searchUser(searchField.getText()));
         addButton.addActionListener(e -> addUser());
         editButton.addActionListener(e -> editUser());
@@ -189,6 +211,7 @@ public class LibraryGUI extends JFrame {
         });
         refreshButton.addActionListener(e -> refreshUsers());
 
+        // Add components to the users panel
         userPanel.add(searchPanel, BorderLayout.NORTH);
         userPanel.add(scrollPane, BorderLayout.CENTER);
         userPanel.add(buttonsPanel, BorderLayout.SOUTH);
