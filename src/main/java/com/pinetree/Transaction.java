@@ -2,29 +2,25 @@ package com.pinetree;
 
 import java.time.LocalDate;
 
-public class Transaction {
+public class Transaction {  
     private String userId;
     private String bookIsbn;
     private String type; // "BORROW" or "RETURN"
     private LocalDate date;
+    private LocalDate returnDate;
 
     // Constructor
-    public Transaction(String userId, String bookIsbn, String type, LocalDate date) {
+    public Transaction(String userId, String bookIsbn, String type, LocalDate date, LocalDate returnDate) {
         this.userId = userId;
         this.bookIsbn = bookIsbn;
         this.type = type;
         this.date = date;
+        this.returnDate = returnDate;
     }
-
-    // Getters
-    public String getUserId() { return userId; }
-    public String getBookIsbn() { return bookIsbn; }
-    public String getType() { return type; }
-    public LocalDate getDate() { return date; }
 
     // Add a transaction to the database
     public void addTransaction() {
-        LibraryDatabase.addTransaction(userId, bookIsbn, type, date);
+        LibraryDatabase.addTransaction(userId, bookIsbn, type, date, returnDate);
     }
 
     // Display all transactions for a user
