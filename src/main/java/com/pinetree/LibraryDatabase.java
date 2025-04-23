@@ -335,6 +335,38 @@ public class LibraryDatabase {
         }
     }
 
+    // Automatically update fines for overdue books
+    public static void updateFines() {
+        String sql = "SELECT user_id, book_isbn, transaction_date FROM transactions WHERE transaction_type = 'BORROW'";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String userId = rs.getString("user_id");
+                String bookIsbn = rs.getString("book_isbn");
+                LocalDate borrowDate = LocalDate.parse(rs.getString("transaction_date"));
+                LocalDate today = LocalDate.now();
+
+                double fine = calculateFine(borrowDate, today);
+
+                if (fine > 0) {
+                    String updateSql = "UPDATE transactions SET fine_amount = ? WHERE user_id = ? AND book_isbn = ? AND transaction_type = 'BORROW'";
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                        updateStmt.setDouble(1, fine);
+                        updateStmt.setString(2, userId);
+                        updateStmt.setString(3, bookIsbn);
+                        updateStmt.executeUpdate();
+                    }
+                }
+            }
+            System.out.println("Fines updated for overdue books.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Clear a user's fine (this would typically be called after payment)
     public static void clearUserFine(String userId) {
         String sql = "UPDATE transactions SET fine_amount = 0 WHERE user_id = ? AND fine_amount > 0";
