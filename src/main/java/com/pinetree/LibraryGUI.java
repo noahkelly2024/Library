@@ -373,17 +373,7 @@ public class LibraryGUI extends JFrame {
         }
     }
 
-    private void addTransaction() {
-        JOptionPane.showMessageDialog(this, "Add Transaction - TODO");
-    }
 
-    private void editTransaction() {
-        JOptionPane.showMessageDialog(this, "Edit Transaction - TODO");
-    }
-
-    private void deleteTransaction() {
-        JOptionPane.showMessageDialog(this, "Delete Transaction - TODO");
-    }
 
     private void addUser() {
         String generatedUserId = "U" + System.currentTimeMillis(); // Generate a unique User ID
