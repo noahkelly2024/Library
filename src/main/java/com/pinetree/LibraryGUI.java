@@ -688,4 +688,161 @@ public class LibraryGUI extends JFrame {
             return DriverManager.getConnection(DB_URL);
         }
     }
+        private void addTransaction() {
+        JTextField userIdField = new JTextField();
+        JTextField bookIsbnField = new JTextField();
+        JComboBox<String> transactionTypeComboBox = new JComboBox<>(new String[]{"BORROW", "RETURN"});
+        JTextField transactionDateField = new JTextField(); // Format: YYYY-MM-DD
+        JTextField fineAmountField = new JTextField();
+    
+        Object[] message = {
+            "User ID:", userIdField,
+            "Book ISBN:", bookIsbnField,
+            "Transaction Type:", transactionTypeComboBox,
+            "Transaction Date (YYYY-MM-DD):", transactionDateField,
+            "Fine Amount:", fineAmountField
+        };
+    
+        int option = JOptionPane.showConfirmDialog(this, message, "Add Transaction", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String userId = userIdField.getText().trim();
+            String bookIsbn = bookIsbnField.getText().trim();
+            String transactionType = (String) transactionTypeComboBox.getSelectedItem();
+            String transactionDate = transactionDateField.getText().trim();
+            String fineAmountText = fineAmountField.getText().trim();
+    
+            if (userId.isEmpty() || bookIsbn.isEmpty() || transactionDate.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "User ID, Book ISBN, and Transaction Date are required.");
+                return;
+            }
+    
+            double fineAmount = 0.0;
+            if (!fineAmountText.isEmpty()) {
+                try {
+                    fineAmount = Double.parseDouble(fineAmountText);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Fine Amount must be a valid number.");
+                    return;
+                }
+            }
+    
+            try (Connection conn = DatabaseHelper.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "INSERT INTO transactions (user_id, book_isbn, transaction_type, transaction_date, fine_amount) VALUES (?, ?, ?, ?, ?)")) {
+    
+                stmt.setString(1, userId);
+                stmt.setString(2, bookIsbn);
+                stmt.setString(3, transactionType);
+                stmt.setString(4, transactionDate);
+                stmt.setDouble(5, fineAmount);
+                stmt.executeUpdate();
+    
+                JOptionPane.showMessageDialog(this, "Transaction added successfully.");
+                refreshTransactions();
+    
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error adding transaction: " + e.getMessage());
+            }
+        }
+    }
+    
+    private void editTransaction() {
+        int selectedRow = transactionsTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a transaction to edit.");
+            return;
+        }
+    
+        String transactionId = transactionsTable.getValueAt(selectedRow, 0).toString();
+        String userId = transactionsTable.getValueAt(selectedRow, 1).toString();
+        String bookIsbn = transactionsTable.getValueAt(selectedRow, 2).toString();
+        String transactionType = transactionsTable.getValueAt(selectedRow, 3).toString();
+        String transactionDate = transactionsTable.getValueAt(selectedRow, 4).toString();
+        String fineAmount = transactionsTable.getValueAt(selectedRow, 5).toString();
+    
+        JTextField userIdField = new JTextField(userId);
+        JTextField bookIsbnField = new JTextField(bookIsbn);
+        JComboBox<String> transactionTypeComboBox = new JComboBox<>(new String[]{"BORROW", "RETURN"});
+        transactionTypeComboBox.setSelectedItem(transactionType);
+        JTextField transactionDateField = new JTextField(transactionDate);
+        JTextField fineAmountField = new JTextField(fineAmount);
+    
+        Object[] message = {
+            "User ID:", userIdField,
+            "Book ISBN:", bookIsbnField,
+            "Transaction Type:", transactionTypeComboBox,
+            "Transaction Date (YYYY-MM-DD):", transactionDateField,
+            "Fine Amount:", fineAmountField
+        };
+    
+        int option = JOptionPane.showConfirmDialog(this, message, "Edit Transaction", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String newUserId = userIdField.getText().trim();
+            String newBookIsbn = bookIsbnField.getText().trim();
+            String newTransactionType = (String) transactionTypeComboBox.getSelectedItem();
+            String newTransactionDate = transactionDateField.getText().trim();
+            String newFineAmountText = fineAmountField.getText().trim();
+    
+            if (newUserId.isEmpty() || newBookIsbn.isEmpty() || newTransactionDate.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "User ID, Book ISBN, and Transaction Date are required.");
+                return;
+            }
+    
+            double newFineAmount = 0.0;
+            if (!newFineAmountText.isEmpty()) {
+                try {
+                    newFineAmount = Double.parseDouble(newFineAmountText);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Fine Amount must be a valid number.");
+                    return;
+                }
+            }
+    
+            try (Connection conn = DatabaseHelper.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "UPDATE transactions SET user_id = ?, book_isbn = ?, transaction_type = ?, transaction_date = ?, fine_amount = ? WHERE transaction_id = ?")) {
+    
+                stmt.setString(1, newUserId);
+                stmt.setString(2, newBookIsbn);
+                stmt.setString(3, newTransactionType);
+                stmt.setString(4, newTransactionDate);
+                stmt.setDouble(5, newFineAmount);
+                stmt.setString(6, transactionId);
+                stmt.executeUpdate();
+    
+                JOptionPane.showMessageDialog(this, "Transaction updated successfully.");
+                refreshTransactions();
+    
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error updating transaction: " + e.getMessage());
+            }
+        }
+    }
+    
+    private void deleteTransaction() {
+        int selectedRow = transactionsTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a transaction to delete.");
+            return;
+        }
+    
+        String transactionId = transactionsTable.getValueAt(selectedRow, 0).toString();
+    
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the selected transaction?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try (Connection conn = DatabaseHelper.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement("DELETE FROM transactions WHERE transaction_id = ?")) {
+    
+                stmt.setString(1, transactionId);
+                stmt.executeUpdate();
+    
+                JOptionPane.showMessageDialog(this, "Transaction deleted successfully.");
+                refreshTransactions();
+    
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error deleting transaction: " + e.getMessage());
+            }
+        }
+    }  
+    
 }
